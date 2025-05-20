@@ -1,7 +1,10 @@
 import typescript from "@rollup/plugin-typescript";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
+import dts from "rollup-plugin-dts";
+
+// Rollup v3 requires configuration to be exported as default
 
 export default [
   // Main bundle
@@ -71,11 +74,11 @@ export default [
     external: ["../core/encoder"],
   },
   {
-      input: "src/index.ts",
-      output: {
-        file: "dist/index.d.ts",
-        format: "es",
-      },
-      plugins: [dts()],
+    input: "src/index.ts",
+    output: {
+      file: "dist/index.d.ts",
+      format: "es",
     },
+    plugins: [dts()],
+  },
 ];

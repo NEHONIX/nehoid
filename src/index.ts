@@ -1,9 +1,18 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) NEHONIX INC. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 import { Generator } from "./core/generator.js";
 import { Validator } from "./core/validator.js";
 import { Specialized } from "./core/specialized.js";
 import { EncodingPipeline } from "./core/pipeline.js";
 import { createMiddleware } from "./integrations/middleware.js";
-import { mongooseField, sequelizeField, typeormDecorator } from "./integrations/database.js";
+import {
+  mongooseField,
+  sequelizeField,
+  typeormDecorator,
+} from "./integrations/database.js";
 export { Encoder } from "./core/encoder.js";
 import {
   IdGeneratorOptions,
@@ -64,7 +73,7 @@ export class NehoID {
   static hex(length?: number): string {
     return Generator.hex(length);
   }
-  
+
   /**
    * Generates a hierarchical ID with parent-child relationships
    * @param options Hierarchical ID options
@@ -73,7 +82,7 @@ export class NehoID {
   static hierarchical(options = {}): string {
     return Specialized.hierarchical(options);
   }
-  
+
   /**
    * Generates a time-ordered ID for chronological sorting
    * @param options Temporal ID options
@@ -82,7 +91,7 @@ export class NehoID {
   static temporal(options = {}): string {
     return Specialized.temporal(options);
   }
-  
+
   /**
    * Generates a sequential ID suitable for database use
    * @param options Sequential ID options
@@ -574,7 +583,7 @@ export const middleware = createMiddleware;
 export const database = {
   mongoose: mongooseField,
   sequelize: sequelizeField,
-  typeorm: typeormDecorator
+  typeorm: typeormDecorator,
 };
 
 // Export EncodingPipeline class
