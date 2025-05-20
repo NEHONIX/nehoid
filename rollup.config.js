@@ -1,78 +1,53 @@
 import typescript from "@rollup/plugin-typescript";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
+import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import terser from "@rollup/plugin-terser";
 import dts from "rollup-plugin-dts";
+import { readFileSync } from "fs";
 
-// Rollup v3 requires configuration to be exported as default
+const pkg = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf8")
+);
 
 export default [
-  // Main bundle
+  // ESM build
   {
     input: "src/index.ts",
-    output: [
-      {
-        file: "dist/index.js",
-        format: "cjs",
-        sourcemap: true,
-        exports: "named",
-      },
-      {
-        file: "dist/index.esm.js",
-        format: "esm",
-        sourcemap: true,
-      },
-    ],
+    output: {
+      file: "dist/index.esm.js",
+      format: "es",
+      sourcemap: true,
+      exports: "named",
+    },
     plugins: [
-      nodeResolve(),
+      resolve(),
       commonjs(),
-      typescript({
-        tsconfig: "./tsconfig.json",
-        declaration: true,
-        declarationDir: "./dist",
-      }),
-      terser(),
+      typescript({ tsconfig: "./tsconfig.json" }),
     ],
-    external: ["nehonix-uri-processor"],
+    external: [
+      ...Object.keys(pkg.dependencies || {}),
+      ...Object.keys(pkg.peerDependencies || {}),
+    ],
   },
-  // Core modules
+  // CommonJS build
   {
-    input: "src/core/generator.ts",
-    output: [
-      { file: "dist/core/generator.js", format: "cjs", sourcemap: true },
-      { file: "dist/core/generator.esm.js", format: "esm", sourcemap: true },
+    input: "src/index.ts",
+    output: {
+      file: "dist/index.cjs",
+      format: "cjs",
+      sourcemap: true,
+      exports: "named",
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      typescript({ tsconfig: "./tsconfig.json" }),
     ],
-    plugins: [nodeResolve(), commonjs(), typescript(), terser()],
-    external: ["nehonix-uri-processor", "../types", "./encoder"],
-  },
-  {
-    input: "src/core/encoder.ts",
-    output: [
-      { file: "dist/core/encoder.js", format: "cjs", sourcemap: true },
-      { file: "dist/core/encoder.esm.js", format: "esm", sourcemap: true },
+    external: [
+      ...Object.keys(pkg.dependencies || {}),
+      ...Object.keys(pkg.peerDependencies || {}),
     ],
-    plugins: [nodeResolve(), commonjs(), typescript(), terser()],
-    external: ["nehonix-uri-processor"],
   },
-  {
-    input: "src/core/validator.ts",
-    output: [
-      { file: "dist/core/validator.js", format: "cjs", sourcemap: true },
-      { file: "dist/core/validator.esm.js", format: "esm", sourcemap: true },
-    ],
-    plugins: [nodeResolve(), commonjs(), typescript(), terser()],
-    external: ["nehonix-uri-processor", "../types"],
-  },
-  // Types
-  {
-    input: "src/types/index.ts",
-    output: [
-      { file: "dist/types/index.js", format: "cjs", sourcemap: true },
-      { file: "dist/types/index.esm.js", format: "esm", sourcemap: true },
-    ],
-    plugins: [nodeResolve(), commonjs(), typescript(), terser()],
-    external: ["../core/encoder"],
-  },
+  // TypeScript declarations
   {
     input: "src/index.ts",
     output: {
@@ -80,5 +55,6 @@ export default [
       format: "es",
     },
     plugins: [dts()],
+    external: ["nehonix-uri-processor"],
   },
 ];

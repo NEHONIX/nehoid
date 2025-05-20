@@ -41,7 +41,7 @@ export class NehoID {
   static generate(options: Partial<IdGeneratorOptions> = {}): string {
     const startTime = performance.now();
     const id = Generator.generate(options);
-    this.updateStats(startTime);
+    NehoID.updateStats(startTime);
     return id;
   }
 
@@ -49,10 +49,10 @@ export class NehoID {
     const startTime = performance.now();
     try {
       const id = await Generator.safe(options);
-      this.updateStats(startTime);
+      NehoID.updateStats(startTime);
       return id;
     } catch (error) {
-      this.stats.collisions++;
+      NehoID.stats.collisions++;
       throw error;
     }
   }
@@ -126,15 +126,15 @@ export class NehoID {
 
   // Monitoring
   static startMonitoring(): void {
-    this.monitoringEnabled = true;
+    NehoID.monitoringEnabled = true;
   }
 
   static stopMonitoring(): void {
-    this.monitoringEnabled = false;
+    NehoID.monitoringEnabled = false;
   }
 
   static getStats(): Stats {
-    return { ...this.stats };
+    return { ...NehoID.stats };
   }
 
   /**
@@ -163,22 +163,22 @@ export class NehoID {
   }
 
   private static updateStats(startTime: number): void {
-    if (!this.monitoringEnabled) return;
+    if (!NehoID.monitoringEnabled) return;
 
-    this.stats.generated++;
+    NehoID.stats.generated++;
     const generationTime = performance.now() - startTime;
 
     // Update average generation time
     const prevTotal =
-      parseFloat(this.stats.averageGenerationTime) * (this.stats.generated - 1);
-    this.stats.averageGenerationTime = `${(
+      parseFloat(NehoID.stats.averageGenerationTime) * (NehoID.stats.generated - 1);
+    NehoID.stats.averageGenerationTime = `${(
       (prevTotal + generationTime) /
-      this.stats.generated
+      NehoID.stats.generated
     ).toFixed(2)}ms`;
 
     // Update memory usage
     const used = process.memoryUsage();
-    this.stats.memoryUsage = `${
+    NehoID.stats.memoryUsage = `${
       Math.round((used.heapUsed / 1024 / 1024) * 100) / 100
     }MB`;
   }
@@ -273,7 +273,7 @@ export class NehoID {
             .then((position) => {
               const { latitude, longitude } = position.coords;
               // Hash the coordinates for privacy
-              const locationHash = this.hashCoordinates(latitude, longitude);
+              const locationHash = NehoID.hashCoordinates(latitude, longitude);
               contextParts.push(`l${locationHash}`);
             })
             .catch(() => {
@@ -370,7 +370,7 @@ export class NehoID {
     }
 
     // Add a unique identifier at the end
-    const uniquePart = this.nanoid(8);
+    const uniquePart = NehoID.nanoid(8);
     parts.push(uniquePart);
 
     // Join all parts with a separator
@@ -425,9 +425,9 @@ export class NehoID {
 
             // If the part doesn't exist, generate a new value
             if (part === "uuid") {
-              return this.uuid();
+              return NehoID.uuid();
             } else if (part === "nano") {
-              return this.nanoid();
+              return NehoID.nanoid();
             } else if (part === "timestamp") {
               return Date.now().toString();
             } else {
@@ -472,9 +472,9 @@ export class NehoID {
             // Generate a sample ID based on the 'from' format
             const sampleIdParts = fromParts.map((part) => {
               if (part === "uuid") {
-                return this.uuid();
+                return NehoID.uuid();
               } else if (part === "nano") {
-                return this.nanoid();
+                return NehoID.nanoid();
               } else if (part === "timestamp") {
                 return Date.now().toString();
               } else if (part === "counter") {
