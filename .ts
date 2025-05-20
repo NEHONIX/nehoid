@@ -5,68 +5,143 @@
  * You can use this in a separate project to test the published package.
  */
 
-import { middleware, database, EncodingPipeline, Encoder, NehoID } from "./dist";
+import { NehoID, EncodingPipeline } from "./dist";
 
-/**
- * SECTION 1: Basic ID Generation
- */
-console.log("\n=== BASIC ID GENERATION ===");
+// ===== TESTING BASIC FUNCTIONALITY =====
+console.log("\n===== BASIC FUNCTIONALITY TESTS =====\n");
 
-// Generate a basic ID
-const basicId = NehoID.generate();
-console.log("Basic ID:", basicId);
+// Test standard ID generation
+const standardId = NehoID.generate();
+console.log("Standard ID:", standardId);
 
-// Generate a UUID
-const uuid = NehoID.uuid();
-console.log("UUID:", uuid);
+// Test UUID generation
+const uuidId = NehoID.uuid();
+console.log("UUID:", uuidId);
 
-// Generate a NanoID
-const nano = NehoID.nanoid(10);
-console.log("NanoID (10 chars):", nano);
+// Test NanoID generation
+const nanoId = NehoID.nanoid();
+console.log("NanoID:", nanoId);
 
-// Generate a short ID
-const short = NehoID.short(8);
-console.log("Short ID (8 chars):", short);
+// Test short ID generation
+const shortId = NehoID.short();
+console.log("Short ID:", shortId);
 
-// Generate a hex ID
-const hex = NehoID.hex(16);
-console.log("Hex ID (16 chars):", hex);
+// Test hex ID generation
+const hexId = NehoID.hex();
+console.log("Hex ID:", hexId);
 
-/**
- * SECTION 2: Specialized ID Generation
- */
-console.log("\n=== SPECIALIZED ID GENERATION ===");
+// ===== TESTING ADVANCED FUNCTIONALITY =====
+console.log("\n===== ADVANCED FUNCTIONALITY TESTS =====\n");
 
-// Generate a hierarchical ID
-const parentId = NehoID.hierarchical();
-console.log("Parent Hierarchical ID:", parentId);
+// Test batch generation
+const batchIds = NehoID.batch({ count: 5 });
+console.log("Batch IDs (5):", batchIds);
 
-const childId = NehoID.hierarchical({ parent: parentId });
-console.log("Child Hierarchical ID:", childId);
+// Test ID validation
+const isValid = NehoID.validate(standardId);
+console.log(`Is ID '${standardId}' valid:`, isValid);
 
-// Generate a temporal ID
-const temporalId = NehoID.temporal();
-console.log("Temporal ID (default):", temporalId);
+// Test ID health check
+const healthCheck = NehoID.healthCheck(standardId);
+console.log("ID Health Check:", healthCheck);
 
-const temporalHourly = NehoID.temporal({ precision: "h", format: "b36" });
-console.log("Temporal ID (hourly, base36):", temporalHourly);
+// ===== TESTING V2 ADVANCED FEATURES =====
+console.log("\n===== V2 ADVANCED FEATURES TESTS =====\n");
 
-// Generate a sequential ID
-const sequentialId = NehoID.sequential({ counter: 1, prefix: "ORDER-" });
-console.log("Sequential ID:", sequentialId);
+// Test quantum ID generation
+const quantumId = NehoID.quantum({ entanglementGroup: "test-group" });
+console.log("Quantum ID:", quantumId);
 
-const sequentialWithSuffix = NehoID.sequential({
-  counter: 2,
-  prefix: "USER-",
-  padLength: 5,
-  suffix: true,
+// Test biometric ID generation
+const biometricId = NehoID.biometric({
+  fingerprint: "fp_test_hash",
+  keystrokeDynamics: [0.32, 0.45, 0.67],
 });
-console.log("Sequential ID with suffix:", sequentialWithSuffix);
+console.log("Biometric ID:", biometricId);
 
-/**
- * Output test completion message
- */
-console.log("\n✅ All NehoID features tested successfully!");
-console.log(
-  "You can use this file as a reference for implementing NehoID in your projects."
-);
+// Test blockchain ID generation
+const blockchainId = NehoID.blockchain({
+  networkId: "test-net",
+  consensusType: "proof-of-stake",
+});
+console.log("Blockchain ID:", blockchainId);
+
+// Test pattern-embedded ID generation
+const patternId = NehoID.patternEmbedded("user-behavior-pattern");
+console.log("Pattern-embedded ID:", patternId);
+
+// Test recursive ID generation
+const recursiveId = NehoID.recursive(2);
+console.log("Recursive ID (depth 2):", recursiveId);
+
+// Test fractal ID generation
+const fractalId = NehoID.fractal(3, 0.7);
+console.log("Fractal ID (3 iterations, 0.7 complexity):", fractalId);
+
+// ===== TESTING COMBINATION METHODS =====
+console.log("\n===== COMBINATION METHODS TESTS =====\n");
+
+// Test ultimate ID generation
+const ultimateId = NehoID.ultimate({
+  quantumGroup: "secure-session",
+  biometricData: { fingerprint: "fp_hash", voicePrint: "vp_hash" },
+  mlFeatures: [0.7, 0.2, 0.9],
+});
+console.log("Ultimate ID:", ultimateId);
+
+// Test predictive sequence generation
+const predictiveSequence = NehoID.predictiveSequence(3);
+console.log("Predictive Sequence Base ID:", predictiveSequence.baseId);
+console.log("Predictive Sequence IDs:", predictiveSequence.sequenceIds);
+console.log("Materialized ID (index 1):", predictiveSequence.materialize(1));
+
+// ===== TESTING DYNAMIC ID SYSTEMS =====
+console.log("\n===== DYNAMIC ID SYSTEMS TESTS =====\n");
+
+// Test adaptive system
+const adaptiveSystem = NehoID.createAdaptiveSystem({});
+const adaptiveId1 = adaptiveSystem.generateNext();
+console.log("Adaptive ID 1:", adaptiveId1);
+const adaptiveId2 = adaptiveSystem.generateNext("user-login");
+console.log("Adaptive ID 2 (with context):", adaptiveId2);
+console.log("Evolution History:", adaptiveSystem.getEvolutionHistory());
+
+// Test fluid pool
+const fluidPool = NehoID.createFluidPool(5);
+const fluidId = fluidPool.draw();
+console.log("Fluid ID from pool:", fluidId);
+fluidPool.replenish(2);
+console.log("Pool size after replenish:", fluidPool.poolSize());
+
+// ===== TESTING ID TRANSFORMATION =====
+console.log("\n===== ID TRANSFORMATION TESTS =====\n");
+
+// Test destiny-bound ID
+const destinyId = NehoID.destinyBound("successful-outcome");
+console.log("Destiny-bound ID:", destinyId.id);
+console.log("Manifested Destiny ID:", destinyId.manifestDestiny());
+console.log("Altered Fate ID:", destinyId.alterFate("alternative-outcome"));
+
+// ===== PERFORMANCE TESTS =====
+console.log("\n===== PERFORMANCE TESTS =====\n");
+
+// Test generation performance
+console.time("Generate 1000 IDs");
+for (let i = 0; i < 1000; i++) {
+  NehoID.generate();
+}
+console.timeEnd("Generate 1000 IDs");
+
+// Test batch generation performance
+console.time("Batch generate 1000 IDs");
+NehoID.batch({ count: 1000 });
+console.timeEnd("Batch generate 1000 IDs");
+
+// Test V2 generation performance
+console.time("Generate 100 Quantum IDs");
+for (let i = 0; i < 100; i++) {
+  NehoID.quantum();
+}
+console.timeEnd("Generate 100 Quantum IDs");
+
+console.log("\n===== ALL TESTS COMPLETED =====\n");

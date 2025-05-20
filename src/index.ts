@@ -1,7 +1,8 @@
-/*---------------------------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------------------------
  *  Copyright (c) NEHONIX INC. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
+ * -------------------------------------------------------------------------------------------
+ */
 
 import { Generator } from "./core/generator.js";
 import { Validator } from "./core/validator.js";
@@ -13,7 +14,6 @@ import {
   sequelizeField,
   typeormDecorator,
 } from "./integrations/database.js";
-export { Encoder } from "./core/encoder.js";
 import {
   IdGeneratorOptions,
   CollisionStrategy,
@@ -26,8 +26,31 @@ import {
   MigrationOptions,
   CompatibilityOptions,
 } from "./types";
+import { NehoIDV2 } from "./exports/v2.export.js";
 
-export class NehoID {
+/**
+ * @author NEHONIX
+ * @since  20/05/2025
+ * @see lab.nehonix.space
+ * NehoId is an advanced unique ID generation utility with multi-layer encoding, collision detection, and context-aware features
+ * -------------------------------------------------------------------------------------------
+ * @example 
+ * ```js 
+ * const id = NehoID.generate({ prefix: "usr" });
+   console.log(id); // "6a617977416b714d-7938716a56515a52-79764d5a50775555"
+
+   const customStrategy: CollisionStrategy = {
+  name: "database-check",
+  maxAttempts: 3,
+  backoffType: "exponential",
+  checkFunction: async (id) => {
+    return !(await myDatabase.findById(id));
+  },
+};
+ * ```
+ * 
+ */
+export class NehoID extends NehoIDV2 {
   private static monitoringEnabled = false;
   private static stats: Stats = {
     generated: 0,
@@ -37,6 +60,9 @@ export class NehoID {
     distributionScore: 1.0,
   };
 
+  static middleware(...p: Parameters<typeof createMiddleware>) {
+    return createMiddleware(...p);
+  }
   // Core generation methods
   static generate(options: Partial<IdGeneratorOptions> = {}): string {
     const startTime = performance.now();
@@ -178,7 +204,7 @@ export class NehoID {
     ).toFixed(2)}ms`;
 
     // Update memory usage
-    const used = process.memoryUsage();
+    const used = process?.memoryUsage();
     NehoID.stats.memoryUsage = `${
       Math.round((used.heapUsed / 1024 / 1024) * 100) / 100
     }MB`;
@@ -580,7 +606,7 @@ export type {
 };
 
 // Framework integrations
-export const middleware = createMiddleware;
+export const NehoIDMiddleware = createMiddleware;
 export const database = {
   mongoose: mongooseField,
   sequelize: sequelizeField,
@@ -589,15 +615,14 @@ export const database = {
 
 // Export EncodingPipeline class
 export { EncodingPipeline };
-
-
+export { Encoder } from "./core/encoder.js";
 
 // For CommonJS compatibility, also export as module.exports if available
 if (typeof module !== "undefined" && module.exports) {
   module.exports = NehoID;
   module.exports.default = NehoID;
   module.exports.NehoID = NehoID;
-  module.exports.middleware = middleware;
+  module.exports.middleware = NehoID.middleware;
   module.exports.database = database;
   module.exports.EncodingPipeline = EncodingPipeline;
 }

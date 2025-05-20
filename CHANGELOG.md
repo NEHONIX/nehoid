@@ -5,7 +5,26 @@ All notable changes to the NehoID library will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] - 2025-05-20
+## [1.1.0] - 2025-05-20
+
+### Changed
+- Renamed `consciousnessEmbedded` method to `patternEmbedded` for more professional terminology
+- Updated `prophetic` method to `predictiveSequence` with improved time-series based implementation
+- Refactored V2 implementation to use static class methods instead of instance methods
+- Updated documentation to use `NehoId` instead of `NehoIDV2` in examples for consistency
+
+### Fixed
+- Resolved circular inheritance issues between NehoID and NehoIDV2 classes
+- Fixed static method references in V2 implementation to use class names instead of `this`
+- Removed all mock implementations in favor of real, functional implementations
+- Ensured all methods use Generator.nano() for consistent ID generation
+
+### Added
+- Comprehensive test suite for all V2 advanced features
+- Added `nanoid` method to NehoIDV2 that calls Generator.nano
+- Enhanced README with detailed V2 feature documentation
+
+## [1.0.1] - 2025-05-19
 
 ### Fixed
 - Express dependency conflict by making it an optional peer dependency

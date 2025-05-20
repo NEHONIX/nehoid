@@ -270,6 +270,76 @@ const User = model("User", {
 });
 ```
 
+## 🚀 Advanced V2 Features
+
+NehoID V2 introduces a set of advanced ID generation capabilities for specialized use cases:
+
+```typescript
+import { NehoId } from "nehoid";
+
+// Quantum-entangled IDs
+const quantumId = NehoId.quantum({ 
+  entanglementGroup: "user-session",
+  coherenceTime: 60000 // 1 minute
+});
+
+// Biometric-based IDs
+const bioId = NehoId.biometric({
+  fingerprint: "fp_data_hash",
+  keystrokeDynamics: [0.32, 0.45, 0.67]
+});
+
+// Blockchain-verified IDs
+const blockchainId = NehoId.blockchain({
+  networkId: "main-net",
+  consensusType: "proof-of-stake"
+});
+
+// Pattern-embedded IDs
+const patternId = NehoId.patternEmbedded("user-behavior-pattern");
+
+// Recursive IDs (nested structure)
+const recursiveId = NehoId.recursive(3); // depth of 3
+
+// Fractal IDs (self-similar patterns)
+const fractalId = NehoId.fractal(4, 0.8); // 4 iterations, 0.8 complexity
+```
+
+### Combination Methods
+
+```typescript
+// Ultimate ID: combines quantum, biometric, and ML features
+const ultimateId = NehoId.ultimate({
+  quantumGroup: "secure-session",
+  biometricData: { fingerprint: "fp_hash", voicePrint: "vp_hash" },
+  mlFeatures: [0.7, 0.2, 0.9]
+});
+
+// Cosmic DNA ID: combines astronomical and genetic features
+const cosmicDnaId = NehoId.cosmicDNA("orion", 5);
+
+// Predictive sequence: time-series based IDs
+const predictiveSequence = NehoId.predictiveSequence(5);
+console.log(predictiveSequence.baseId); // Base ID
+console.log(predictiveSequence.sequenceIds); // Array of sequence IDs
+const materializedId = predictiveSequence.materialize(2); // Materialize the 3rd ID
+```
+
+### Dynamic ID Systems
+
+```typescript
+// Adaptive ID system that evolves over time
+const adaptiveSystem = NehoId.createAdaptiveSystem({});
+const adaptiveId1 = adaptiveSystem.generateNext();
+const adaptiveId2 = adaptiveSystem.generateNext("user-login");
+console.log(adaptiveSystem.getEvolutionHistory());
+
+// Fluid ID pool with transformations
+const fluidPool = NehoId.createFluidPool(50);
+const fluidId = fluidPool.draw();
+fluidPool.replenish(10);
+```
+
 ## 📝 License
 
 MIT License - see LICENSE file for details

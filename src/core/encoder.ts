@@ -24,14 +24,16 @@ export type ENC_TYPE =
   | "rawHex";
 
 export class Encoder {
-  static encode(input: string, encodings: ENC_TYPE | ENC_TYPE[]): string {
+  static async encode(
+    input: string,
+    encodings: ENC_TYPE | ENC_TYPE[]
+  ): Promise<string> {
     const encodingArray = Array.isArray(encodings) ? encodings : [encodings];
     let result = input;
 
-    for (const encoding of encodingArray) {
-      result = __processor__.encode(result, encoding);
-    }
+    const enc = await __processor__.encodeMultipleAsync(result, encodingArray);
 
+    result = enc.results[enc.results.length - 1].encoded;
     return result;
   }
 

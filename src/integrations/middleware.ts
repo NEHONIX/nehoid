@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) NEHONIX INC. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 /**
  * Express middleware integration for NehoID
  * Provides request ID generation and tracking
@@ -19,6 +24,19 @@ export interface MiddlewareOptions {
   addToRequest?: boolean;
   /** Custom ID generator function */
   generator?: () => string;
+
+  /**
+   * Generate a name while requesting.
+   * @default NehoID
+   *
+   * @example ```js
+   *    const headerId = req.NehoID
+   *
+   * console.log(headerId) //undefined or something-like-this
+   * ```
+   *
+   */
+  name4Req?: string;
 }
 
 /**
@@ -57,7 +75,7 @@ export function createMiddleware(options: MiddlewareOptions = {}) {
 
     // Add ID to request object if enabled
     if (addToRequest) {
-      req.id = requestId;
+      req[options.name4Req || "NehoID"] = requestId;
     }
 
     // Add ID to response header if enabled

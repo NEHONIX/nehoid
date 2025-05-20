@@ -3,6 +3,7 @@
  * Provides a fluent interface for building encoding pipelines
  */
 
+import { __processor__ } from "nehonix-uri-processor";
 import { ENC_TYPE, Encoder } from "./encoder";
 
 export class EncodingPipeline {
@@ -80,7 +81,8 @@ export class EncodingPipeline {
 
     // Apply encoders in sequence
     if (this.encoders.length > 0) {
-      result = Encoder.encode(result, this.encoders);
+      const enc = __processor__.encodeMultiple(result, this.encoders);
+      result = enc.results[enc.results.length - 1].encoded;
     }
 
     // Apply compression if specified
@@ -98,7 +100,7 @@ export class EncodingPipeline {
       };
 
       // Convert to JSON and encode in base64
-      const configStr = btoa(JSON.stringify(config));
+      const configStr = __processor__.encode(JSON.stringify(config), "base64");
 
       // Add as prefix with separator
       result = `${configStr}:${result}`;
