@@ -1,6 +1,6 @@
 {
   "name": "nehoid",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Advanced unique ID generation utility with multi-layer encoding, collision detection, and context-aware features",
   "main": "dist/index.js",
