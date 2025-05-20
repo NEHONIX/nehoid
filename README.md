@@ -282,4 +282,4 @@ We welcome contributions! See CONTRIBUTING.md for guidelines.
 
 - 📧 Email: support@nehonix.space
 - 🐛 Issues: [GitHub Issues](https://github.com/nehonix/nehoid/issues)
-- 📖 Docs: [Full Documentation](https://nehoid.docs.nehonix.space)
+- 📖 Docs: [Full Documentation](https://lab.nehonix.space)
