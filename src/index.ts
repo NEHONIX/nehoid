@@ -170,7 +170,8 @@ export class NehoID {
 
     // Update average generation time
     const prevTotal =
-      parseFloat(NehoID.stats.averageGenerationTime) * (NehoID.stats.generated - 1);
+      parseFloat(NehoID.stats.averageGenerationTime) *
+      (NehoID.stats.generated - 1);
     NehoID.stats.averageGenerationTime = `${(
       (prevTotal + generationTime) /
       NehoID.stats.generated
@@ -589,4 +590,14 @@ export const database = {
 // Export EncodingPipeline class
 export { EncodingPipeline };
 
-export default NehoID;
+
+
+// For CommonJS compatibility, also export as module.exports if available
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = NehoID;
+  module.exports.default = NehoID;
+  module.exports.NehoID = NehoID;
+  module.exports.middleware = middleware;
+  module.exports.database = database;
+  module.exports.EncodingPipeline = EncodingPipeline;
+}
